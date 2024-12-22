@@ -5,7 +5,7 @@ using SDG.Unturned;
 using UnityEngine;
 using RocketLogger = Rocket.Core.Logging.Logger;
 
-namespace HideVanish.Patches
+namespace BetterVanish.Patches
 {
     [HarmonyPatch]
     internal static class PatchAlerts

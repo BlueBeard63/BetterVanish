@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace HideVanish.Patches
+namespace BetterVanish.Patches
 {
     public static class HarmonyExceptionHandler
     {
