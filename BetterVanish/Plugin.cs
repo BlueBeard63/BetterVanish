@@ -60,32 +60,38 @@ namespace BetterVanish
         {
             var players = new List<Player>();
             PlayerTool.getPlayersInRadius(position, 3, players);
-            if (players.Count != 0)
+            if (players.Count == 0)
             {
-                var player = players[0];
-                if (IsPlayerVanished(player))
-                {
-                    allow = false;
-                }
+                return;
+            }
+            
+            var player = players[0];
+            if (IsPlayerVanished(player))
+            {
+                allow = false;
             }
         }
 
         private static void OnZombieAlertRequested(Zombie zombie, ref bool allow)
         {
-            if (zombie.player != null && IsPlayerVanished(zombie.player))
+            if (zombie.player == null || !IsPlayerVanished(zombie.player))
             {
-                allow = false;        
-                zombie.player = null;
+                return;
             }
+            
+            allow = false;        
+            zombie.player = null;
         }
 
         private static void OnZombieTick(Zombie zombie, ref bool allow)
         {
-            if (zombie.player != null && IsPlayerVanished(zombie.player))
+            if (zombie.player == null || !IsPlayerVanished(zombie.player))
             {
-                allow = false;        
-                zombie.player = null;
+                return;
             }
+            
+            allow = false;        
+            zombie.player = null;
         }
 
         private static bool IsPlayerVanished(Player player)
