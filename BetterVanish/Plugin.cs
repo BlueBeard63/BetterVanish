@@ -47,6 +47,7 @@ namespace BetterVanish
         
             UnloadPlugin();
         }
+        
         private static void OnPlayerAlertRequested(Player player, ref bool allow)
         {
             if (IsPlayerVanished(player))
@@ -89,7 +90,7 @@ namespace BetterVanish
 
         private static bool IsPlayerVanished(Player player)
         {
-            UnturnedPlayer unturnedPlayer = UnturnedPlayer.FromPlayer(player);
+            var unturnedPlayer = UnturnedPlayer.FromPlayer(player);
 
             return unturnedPlayer.VanishMode;
         }
