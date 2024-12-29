@@ -36,16 +36,13 @@ namespace BetterVanish.Patches
             {
                 var allow = true;
                 OnPlayerAlertRequested?.Invoke(player, ref allow);
-                if (allow == false)
-                {
-                    return false;
-                }
+                return allow;
             }
             catch (Exception ex)
             {
                 RocketLogger.LogException(ex, $"An error occured while firing \"{nameof(OnPlayerAlertRequested)}\"");
+                return true;
             }
-            return true;
         }
         [HarmonyPatch(typeof(AlertTool), nameof(AlertTool.alert), typeof(Vector3), typeof(float))]
         [HarmonyPrefix]
@@ -55,39 +52,34 @@ namespace BetterVanish.Patches
             {
                 var allow = true;
                 OnAlertRequested?.Invoke(position, radius, ref allow);
-                if (allow == false)
-                {
-                    return false;
-                }
+                return allow;
             }
             catch (Exception ex)
             {
                 RocketLogger.LogException(ex, $"An error occured while firing \"{nameof(OnAlertRequested)}\"");
+                return true;
             }
-            return true;
         }
         [HarmonyPatch(typeof(Zombie), nameof(Zombie.alert), typeof(Vector3), typeof(bool))]
         [HarmonyPrefix]
         private static bool PatchZombieAlert(Zombie __instance, Vector3 newPosition, bool isStartling)
         {
-            if (__instance.player != null)
+            if (__instance.player == null)
             {
-                var allow = true;
-                try
-                {
-                    OnZombieAlertRequested?.Invoke(__instance, ref allow);
-                    if (allow == false)
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    RocketLogger.LogException(ex, $"An error occured while firing {nameof(OnZombieAlertRequested)}");
-                    return true;
-                }
+                return true;
             }
-            return true;
+            
+            var allow = true;
+            try
+            {
+                OnZombieAlertRequested?.Invoke(__instance, ref allow);
+                return allow;
+            }
+            catch (Exception ex)
+            {
+                RocketLogger.LogException(ex, $"An error occured while firing {nameof(OnZombieAlertRequested)}");
+                return true;
+            }
         }
         [HarmonyPatch(typeof(Zombie), nameof(Zombie.tick))]
         [HarmonyPrefix]
@@ -97,17 +89,13 @@ namespace BetterVanish.Patches
             {
                 var allow = true;
                 OnZombieTick?.Invoke(__instance, ref allow);
-                if (allow == false)
-                {
-                    return false;
-                }
+                return allow;
             }
             catch (Exception ex)
             {
                 RocketLogger.LogException(ex, $"An error occured while firing \"{nameof(OnZombieTick)}\"");
                 return true;
             }
-            return true;
         }
     }
 }
